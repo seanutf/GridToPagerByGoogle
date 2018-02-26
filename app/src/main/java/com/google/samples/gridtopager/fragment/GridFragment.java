@@ -26,12 +26,12 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import com.google.samples.gridtopager.adapter.GridAdapter;
 import com.google.samples.gridtopager.MainActivity;
@@ -104,10 +104,7 @@ public class GridFragment extends Fragment {
         fade.setDuration(375);
         fade.setStartDelay(25);
         fade.addTarget(R.id.card_view);
-//      Transition transition = TransitionInflater.from(getContext()).inflateTransition(R.transition.grid_exit_transition);
-//      //Transition transition1 = new Transition();
-
-        fade.setInterpolator(new FastOutLinearInInterpolator());
+        fade.setInterpolator(new FastOutSlowInInterpolator());
         setExitTransition(fade);
         // A similar mapping is set at the ImagePagerFragment with a setEnterSharedElementCallback.
         setExitSharedElementCallback(
