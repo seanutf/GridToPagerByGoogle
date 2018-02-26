@@ -115,16 +115,15 @@ public class GridAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     /**
      * 处理单个View的点击事件：启动一个显示当前图片的{@link  ImagePagerFragment}，并将图片的当前位置传递给Fragment
      *
-     * @param view the clicked {@link ImageView} (the shared element view will be re-mapped at the
-     * GridFragment's SharedElementCallback)
-     * @param position the selected view position
+     * @param view 所点击的{@link ImageView} 共享元素将会在GridFragment中的SharedElementCallback重新映射
+     * @param position 所选中View的位置
      */
     @Override
     public void onItemClicked(View view, int position) {
-      // Update the position.
+      // 更新位置
       MainActivity.currentPosition = position;
 
-      // Exclude the clicked card from the exit transition (e.g. the card will disappear immediately
+      // 从已经存在的过渡动画列表中排除所点击的View。（举例）Exclude the clicked card from the exit transition (e.g. the card will disappear immediately
       // instead of fading out with the rest to prevent an overlapping animation of fade and move).
       ((Fade) fragment.getExitTransition()).excludeTarget(view, true);
 
