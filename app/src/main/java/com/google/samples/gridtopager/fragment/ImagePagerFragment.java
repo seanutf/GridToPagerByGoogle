@@ -18,6 +18,9 @@ package com.google.samples.gridtopager.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.transition.ChangeBounds;
+import android.support.transition.ChangeClipBounds;
+import android.support.transition.ChangeTransform;
 import android.support.transition.Fade;
 import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
@@ -78,6 +81,9 @@ public class ImagePagerFragment extends Fragment {
     TransitionSet transitionSet = new TransitionSet();
     transitionSet.setDuration(375);
     transitionSet.setOrdering(ORDERING_TOGETHER);
+    transitionSet.addTransition(new ChangeClipBounds());
+    transitionSet.addTransition(new ChangeTransform());
+    transitionSet.addTransition(new ChangeBounds());
 //      Transition transition = TransitionInflater.from(getContext()).inflateTransition(R.transition.grid_exit_transition);
 //      //Transition transition1 = new Transition();
 
