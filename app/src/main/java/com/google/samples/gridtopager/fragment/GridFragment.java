@@ -16,14 +16,17 @@
 
 package com.google.samples.gridtopager.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.transition.Fade;
+import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLayoutChangeListener;
@@ -35,6 +38,8 @@ import com.google.samples.gridtopager.R;
 
 import java.util.List;
 import java.util.Map;
+
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 
 /**
  * A fragment for displaying a grid of images.
@@ -49,7 +54,6 @@ public class GridFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_grid, container, false);
         recyclerView.setAdapter(new GridAdapter(this));
-
         prepareTransitions();
         postponeEnterTransition();
 
@@ -96,12 +100,20 @@ public class GridFragment extends Fragment {
      * that affect the flow.
      */
     private void prepareTransitions() {
-        Fade fade = new Fade();
-        fade.setDuration(375);
-        fade.setStartDelay(25);
-        fade.addTarget(R.id.card_view);
-        fade.setInterpolator(new FastOutSlowInInterpolator());
-        setExitTransition(fade);
+        if (Build.VERSION.SDK_INT >= LOLLIPOP) {
+            setExitTransition(TransitionInflater.from(getContext())
+                    .inflateTransition(R.transition.grid_exit_transition));
+        }else {
+            TransitionSet transitionSet = new TransitionSet();
+            transitionSet.setDuration(375);
+            transitionSet.setStartDelay(25);
+            transitionSet.setInterpolator(new FastOutSlowInInterpolator());
+            Fade fade = new Fade();
+            fade.addTarget(R.id.card_view);
+            transitionSet.addTransition(fade);
+            setExitTransition(transitionSet);
+        }
+
         // A similar mapping is set at the ImagePagerFragment with a setEnterSharedElementCallback.
         setExitSharedElementCallback(
                 new SharedElementCallback() {

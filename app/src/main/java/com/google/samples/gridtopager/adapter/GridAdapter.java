@@ -22,7 +22,6 @@ import static com.google.samples.gridtopager.adapter.ImageData.IMAGE_DRAWABLES;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.transition.Fade;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -125,7 +124,11 @@ public class GridAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
       // 从已经存在的过渡动画列表中排除所点击的View。（举例）Exclude the clicked card from the exit transition (e.g. the card will disappear immediately
       // instead of fading out with the rest to prevent an overlapping animation of fade and move).
-      ((Fade) fragment.getExitTransition()).excludeTarget(view, true);
+      if (Build.VERSION.SDK_INT >= LOLLIPOP) {
+        ((TransitionSet) fragment.getExitTransition()).excludeTarget(view, true);
+      } else {
+        ((android.support.transition.TransitionSet) fragment.getExitTransition()).excludeTarget(view, true);
+      }
 
       ImageView transitioningView = view.findViewById(R.id.card_image);
       String transitionName;
